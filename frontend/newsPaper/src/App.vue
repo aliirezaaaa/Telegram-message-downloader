@@ -9,10 +9,14 @@ import Footer from './components/footer.vue'
   <q-layout view="hHh lpR fff">
     <HeaderDrawer />
     <q-page-container>
-      <router-view />
+
     </q-page-container>
     <Footer />
   </q-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+body {
+  background-color: red;
+}
+</style>
