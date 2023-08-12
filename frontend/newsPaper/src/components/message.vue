@@ -1,56 +1,49 @@
-<template >
-    <q-header bordered class="bg-white text-black" height-hint="98">
-        <q-toolbar style="display: flex; justify-content: space-between;">
-            <h6 class="text-subtitle1 no-margin">{{ today }}</h6>
-            <h3 class="text-h3 text-weight-medium text-center no-margin q-py-sm" style="font-family: Chomsky;">Shiraz Times
-            </h3>
-            <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
-        </q-toolbar>
+<template>
+    <div class="q-pa-md row q-gutter-md" style="display: flex;justify-content: center;">
+        <q-card style="width: 70%; min-width: 10rem" v-for="(single_message, index) in all_messages" :key="single_message"
+            flat bordered dir="rtl">
+            <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" />
 
-    </q-header>
+            <q-card-section>
+                <div style="display: flex;justify-content: space-between;align-items: center;">
+                    <div class="text-overline text-orange-9">{{ single_message.news_agency }}</div>
+                    <div style="display: flex;">
+                        {{ single_message.views }}
+                        <q-icon class="q-mx-sm" name="img:../../public/icon/eyeVector.svg" />
+                    </div>
+                </div>
+                <!-- <div class="text-h5 q-mt-sm q-mb-xs">{{ single_message.message_text }}</div> -->
+                <div class="text-caption text-grey ellipsis-2-lines">
+                    {{ single_message.message_text }}
+                </div>
+            </q-card-section>
 
-    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
-        <q-scroll-area class="fit">
-            <q-list>
+            <q-card-actions>
+                <q-btn color="grey" round flat dense :icon="expanded[index] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                    @click="toggle_expansion(index)" />
+                <q-space />
+                <q-btn flat color="primary" label="Share" />
 
-                <template v-for="(menuItem, index) in channel_name" :key="index">
+            </q-card-actions>
+
+            <q-slide-transition>
+                <div v-show="expanded[index]">
                     <q-separator />
-                    <q-item class="q-pa-sm" clickable :active="menuItem.label === 'Outbox'" v-ripple>
-
-                        <q-item-section style="display: flex;align-items: center;">
-                            {{ menuItem }}
-                        </q-item-section>
-                        <q-item-section style="display: flex;align-items: center;">
-                            <q-avatar>
-                                <img src="../assets/rdj.jpg">
-                            </q-avatar>
-                        </q-item-section>
-                    </q-item>
-
-                </template>
-
-            </q-list>
-        </q-scroll-area>
-    </q-drawer>
+                    <q-card-section class="text-subitle2">
+                        {{ single_message.message_text }}
+                    </q-card-section>
+                </div>
+            </q-slide-transition>
+        </q-card>
+    </div>
 </template>
-
+  
 <script>
 import { ref } from 'vue'
 
-
 export default {
     setup() {
-        const rightDrawerOpen = ref(false)
-        function join(date, options, separator) {
-            function format(option) {
-                let formatter = new Intl.DateTimeFormat('fa', option);
-                return formatter.format(date);
-            }
-            return options.map(format).join(separator);
-        }
-        let options = [{ weekday: 'long' }, { day: 'numeric' }, { month: 'short' }, { year: 'numeric' }];
-        let today = join(new Date, options, ' ');
-        console.log(today);
+        let expanded = ref([])
         //sample data
         const allData = {
             "67414": {
@@ -175,28 +168,27 @@ export default {
             }
         }
 
-        let channel_name = ['گزیده اخبار']
+        let all_messages = []
 
         for (const key in allData) {
-            if (!channel_name.includes(allData[key]['channel'])) {
-                channel_name.push(allData[key]['channel'])
-            }
+            all_messages.push({
+                news_agency: allData[key]['channel'],
+                message_text: allData[key]['message'],
+                views: allData[key]['views']
+            })
+            expanded.value.push(false)
+        }
+
+        function toggle_expansion(index) {
+            expanded.value[index] = !expanded.value[index]
         }
 
         return {
-            rightDrawerOpen,
-            toggleRightDrawer() {
-                rightDrawerOpen.value = !rightDrawerOpen.value
-            },
-            channel_name,
-            today
+            expanded,
+            all_messages,
+            toggle_expansion,
         }
     }
 }
 </script>
-<style>
-@font-face {
-    font-family: "Chomsky";
-    src: url('fonts/Chomsky-399c.woff');
-}
-</style>
+  
