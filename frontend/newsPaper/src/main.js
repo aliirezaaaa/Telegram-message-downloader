@@ -12,10 +12,14 @@ import 'quasar/src/css/index.sass'
 // Assumes your root component is App.vue
 // and placed in same folder as main.js
 import App from './App.vue'
+import langFa from 'quasar/lang/fa'
 
 const myApp = createApp(App)
 
 myApp.use(Quasar, {
+    config: {
+        lang: langFa
+    },
     plugins: {}, // import Quasar plugins and add here
 })
 

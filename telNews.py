@@ -10,19 +10,11 @@ if response:
 api_id = 20943743
 api_hash = "6b97d1f4da545ab543b0a8c8831c1aee"
 
-
-proxy = (socks.SOCKS5, '74.208.177.198', '80')
-# # proxies = {
-# #     'https' : 'https://10.2.6.222:8080'
-# # }
-
-# connection = connection.ConnectionTcpMTProxyRandomizedIntermediate
-# client =  TelegramClient('test', api_id, api_hash, connection=connection, proxy=('Unknown', 443, 'eeda411655b684fe87abf58ec2235e28167765622e62616c652e696f'))
-client =  TelegramClient('test', api_id, api_hash, proxy=proxy)
+client =  TelegramClient('test', api_id, api_hash)
 client.start()
 
-chats = ['alliirrreza']
-for message in client.iter_messages("alliirrreza"):
+chats = ['ManotoTV']
+for message in client.get_messages(chats[0],limit=2):
     print(message.id, message.text)
     
 # df = pd.DataFrame()

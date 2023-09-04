@@ -5,7 +5,8 @@
             <!-- <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" /> -->
             <!-- <q-img :src="`../../media/${single_message.media_id}.jpg`" /> -->
             <q-img v-if="single_message.message_type == 'image'" :src="`${single_message.media_id}`" />
-            <q-video v-else :ratio="16 / 9" src="../../media/shadmehr.mp4" />
+            <!-- <q-video v-else :ratio="16 / 9" src="../../media/shadmehr.mp4" /> -->
+            <q-video v-else :ratio="16 / 9" src="" />
             <q-card-section>
                 <div style="display: flex;justify-content: space-between;align-items: center;">
                     <div class="text-overline text-orange-9">{{ single_message.news_agency }}</div>

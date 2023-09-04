@@ -1,7 +1,35 @@
 <template >
     <q-header bordered class="bg-white text-black" height-hint="98">
+        <div class="q-pt-md q-pl-md" style="display: flex; justify-content: space-between;">
+
+            <div style="display: flex;">
+                <DatePicker />
+                <q-input dense standout v-model="searchText" input-class="text-right" class="q-ml-md">
+                    <template v-slot:append>
+                        <q-icon v-if="text === ''" name="search" />
+                        <q-icon v-else name="clear" class="cursor-pointer" @click="text = ''" />
+                    </template>
+                </q-input>
+            </div>
+            <div>
+                <q-select dense label="نمایش بر اساس" transition-show="flip-up" transition-hide="flip-down" filled
+                    v-model="sortBy" :options="sortByOptions" style="width: 250px" />
+            </div>
+        </div>
+
         <q-toolbar style="display: flex; justify-content: space-between;">
-            <h6 class="text-subtitle1 no-margin">{{ today }}</h6>
+            <div style="display: flex;flex-direction: column;">
+                <h6 class="text-subtitle1 no-margin">{{ today }}</h6>
+                <!-- <div style="display: flex;">
+                    <DatePicker />
+                    <q-input dense standout v-model="searchText" input-class="text-right" class="q-ml-md">
+                        <template v-slot:append>
+                            <q-icon v-if="text === ''" name="search" />
+                            <q-icon v-else name="clear" class="cursor-pointer" @click="text = ''" />
+                        </template>
+                    </q-input>
+                </div> -->
+            </div>
             <h3 class="text-h3 text-weight-medium text-center no-margin q-py-sm" style="font-family: Chomsky;">Shiraz Times
             </h3>
             <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
@@ -36,11 +64,16 @@
 
 <script>
 import { ref } from 'vue'
-
+import DatePicker from './datePicker.vue';
 
 export default {
     setup() {
-        const rightDrawerOpen = ref(false)
+        const rightDrawerOpen = ref(false);
+        let searchText = ref('')
+        let sortBy = ref(null)
+        let sortByOptions = [
+            'جدید ترین', 'پر بازدید ترین', 'قدیمی ترین',
+        ]
         function join(date, options, separator) {
             function format(option) {
                 let formatter = new Intl.DateTimeFormat('fa', option);
@@ -173,25 +206,26 @@ export default {
                 "message": "فرماندار جیرفتِ کرمان: قاچاقچی‌ای که با ریختن گازوییل در جاده باعث واژگونی خودروی پلیس و شهادت یک مامور شده بود، دستگیر شد.\n@Farsna - Link",
                 "views": 2778
             }
-        }
-
-        let channel_name = ['گزیده اخبار']
-
+        };
+        let channel_name = ['گزیده اخبار'];
         for (const key in allData) {
             if (!channel_name.includes(allData[key]['channel'])) {
-                channel_name.push(allData[key]['channel'])
+                channel_name.push(allData[key]['channel']);
             }
         }
-
         return {
             rightDrawerOpen,
+            sortBy,
+            sortByOptions,
+            searchText,
             toggleRightDrawer() {
-                rightDrawerOpen.value = !rightDrawerOpen.value
+                rightDrawerOpen.value = !rightDrawerOpen.value;
             },
             channel_name,
             today
-        }
-    }
+        };
+    },
+    components: { DatePicker }
 }
 </script>
 <style>
