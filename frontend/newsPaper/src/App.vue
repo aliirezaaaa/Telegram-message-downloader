@@ -13,7 +13,9 @@ import Footer from './components/footer.vue'
       <q-page-container>
 
         <div style="display: flex;justify-content: center;">
-          <Message />
+          <suspense>
+            <Message />
+          </suspense>
         </div>
 
       </q-page-container>

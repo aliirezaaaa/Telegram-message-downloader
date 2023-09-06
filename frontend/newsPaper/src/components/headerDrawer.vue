@@ -83,7 +83,7 @@ export default {
         }
         let options = [{ weekday: 'long' }, { day: 'numeric' }, { month: 'short' }, { year: 'numeric' }];
         let today = join(new Date, options, ' ');
-        console.log(today);
+
         //sample data
         const allData = {
             "67414": {
