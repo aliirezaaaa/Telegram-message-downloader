@@ -38,45 +38,52 @@
 </template>
   
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export default {
-    async setup() {
+    props: ['all_news'],
+    setup(props) {
+
+        const propsData = computed(() => {
+            return {
+                computedNews: props.all_news,
+            };
+        });
         let expanded = ref([])
-        const all_news = []
+        // const all_news = []
 
-        async function fetching() {
-            const response = await fetch('http://127.0.0.1:8000/news/api/all/');
-            const data = await response.json();
-            data.map(item => {
-                let media_type = ''
-                if (item.image_url.slice(-3) == "jpg") {
-                    media_type = 'image';
-                } else {
-                    if (item.image_url.slice(-3) == "mp4") {
-                        media_type = 'video';
-                    }
-                }
+        // async function fetching() {
+        //     const response = await fetch('http://127.0.0.1:8000/news/api/all/news/');
+        //     const data = await response.json();
+        //     data.map(item => {
+        //         let media_type = ''
+        //         if (item.image_url.slice(-3) == "jpg") {
+        //             media_type = 'image';
+        //         } else {
+        //             if (item.image_url.slice(-3) == "mp4") {
+        //                 media_type = 'video';
+        //             }
+        //         }
 
-                all_news.push({
-                    channel: item.channel,
-                    message: item.message,
-                    views: item.views,
-                    media_url: item.image_url,
-                    media_type: media_type
-                })
-            })
+        //         all_news.push({
+        //             channel: item.channel,
+        //             message: item.message,
+        //             views: item.views,
+        //             media_url: item.image_url,
+        //             media_type: media_type
+        //         })
+        //     })
 
-        }
-        await fetching()
+        // }
+        // await fetching()
 
         function toggle_expansion(index) {
             expanded.value[index] = !expanded.value[index]
         }
-
+        console.log("from msg: ", propsData.value.computedNews);
         return {
             expanded,
-            all_news,
+            all_news: propsData.value.computedNews,
             toggle_expansion,
         }
     }
